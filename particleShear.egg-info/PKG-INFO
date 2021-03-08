@@ -1,0 +1,14 @@
+Metadata-Version: 1.2
+Name: particleShear
+Version: 1.0
+Summary: Simulation of frictional and possibly crosslinked particles in shear
+Home-page: https://github.com/tbgitoo/particleShear
+Author: Thomas Braschler
+Author-email: thomas.braschler@gmail.com
+License: MIT
+Project-URL: Bug Tracker, https://github.com/tbgitoo/particleShear/issues
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GPLv3
+Classifier: Operating System :: OS Independent
