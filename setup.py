@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name='particleShear',
       version='1.0',
       description='Simulation of frictional and possibly crosslinked particles in shear',
-      url='',
+      url='https://github.com/tbgitoo/particleShear',
       author='Thomas Braschler',
       author_email='thomas.braschler@gmail.com',
       license='MIT',
@@ -14,4 +14,13 @@ setup(name='particleShear',
                 'particleShearTest'],
       install_requires=['Pillow'],
       zip_safe=False,
-      test_suite='particleShearTest')
+      test_suite='particleShearTest',
+      project_urls={
+          "Bug Tracker": "https://github.com/tbgitoo/particleShear/issues"
+      },
+      classifiers=[
+          "Programming Language :: Python :: 3",
+          "License :: OSI Approved :: GPLv3",
+          "Operating System :: OS Independent",
+      ]
+      )
