@@ -6,7 +6,9 @@ __all__ = ["neighbor_relation_linkable",
 "EnsembleCompactParticlesAdjustableInterfaceStrength",
            "EnsembleCompactParticlesAdjustableInterfaceStrengthFromModelParameters",
            "EnsembleCompactParticlesFromModelParameters",
-           "SphereLinkable","SphereLinkableAdjustableInterfaceStrength"]
+           "SphereLinkable","SphereLinkableAdjustableInterfaceStrength",
+           "elastic_force_law_tensile","elastic_force_law_tensile_exponential",
+           "TensileConfiguration"]
 
 # Basic tools
 from .neighbor_relation_linkable import neighbor_relation_linkable
@@ -31,6 +33,11 @@ from .EnsembleCompactParticles import EnsembleCompactParticlesFromModelParameter
 from .SphereLinkable import SphereLinkable
 from .SphereLinkableAdjustableInterfaceStrength import SphereLinkableAdjustableInterfaceStrength
 
+
+# Alternative tensile laws
+from .SphereLinkable import TensileConfiguration
+from .SphereLinkable import elastic_force_law_tensile
+from .SphereLinkable import elastic_force_law_tensile_exponential
 
 
 

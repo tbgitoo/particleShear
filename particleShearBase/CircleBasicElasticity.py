@@ -10,7 +10,85 @@ from .Graphical_output_configuration import Graphical_output_configuration
 
 from .CircleMassNeighbors import CircleMassNeighbors
 
-#
+
+def distance_transform_plateau(d, plateau_begin, plateau_end, relative_plateau_slope):
+    """Helper function to transform the separation distance between particles to produce a force profile with
+    a plateau, as typical for spongy materials
+
+        - **parameters**\n
+            `d` Center-center distance of the interacting particles\n
+            `plateau_begin` Beginning of the plateau (smaller distance)\n
+            `plateau_end` End of the plateau (larger distance)\n
+            `relative_plateau_slope` Relative slope change on the plateau (1 = linear relation)\n
+        """
+
+
+    if d>=plateau_end:
+        return d
+
+    if d>=plateau_begin:
+        return plateau_end + (d-plateau_end)*relative_plateau_slope
+
+    return d/plateau_begin*(plateau_end + (plateau_begin-plateau_end)*relative_plateau_slope)
+
+
+def elastic_force_law_plateau(d, d0, k, central_repulsion_coefficient):
+    """Alternate elastic force law with a plateau at mid range of compression (for simulation of sponge-like materials)
+
+    - **parameters**\n
+        `d` Center-center distance of the interacting particles\n
+        `d0` Equilibrium center-center distance\n
+        `k` Spring constant\n
+        `central_repulsion_coefficient` Possibility to have increased central repulsion at very closed distances.\n
+    """
+
+    if d > d0:
+        return 0
+
+
+
+    plateau_begin = PlateauConfiguration.relative_plateau_begin * d0
+    plateau_end = PlateauConfiguration.relative_plateau_end * d0
+
+    d = distance_transform_plateau(d,plateau_begin,plateau_end, PlateauConfiguration.relative_plateau_slope)
+
+
+    linear_force = -k * (1 - central_repulsion_coefficient) * (d0 - d)
+    nonlinear_addition = -k * central_repulsion_coefficient * d0 * (
+                d0 / max(d, d0 / 1000) - 1)
+
+    return linear_force + nonlinear_addition
+
+
+def elastic_force_law(d, d0, k, central_repulsion_coefficient):
+    """Default elastic force law with a plateau at mid range of compression (for simulation of sponge-like materials)
+
+    Scalar value of the elastic force exerted on this sphere. A negative value signifies that the current object
+    is pushed back by the other sphere, a positive value signifies attraction\n
+    - **parameters**\n
+        `d` Center-center distance of the interacting particles\n
+        `d0` Equilibrium center-center distance\n
+        `k` Spring constant\n
+        `central_repulsion_coefficient` Possibility to have increased central repulsion at very closed distances.\n
+    """
+
+    if d > d0:
+        return 0
+
+    linear_force = -k * (1 - central_repulsion_coefficient) * (d0 - d)
+    nonlinear_addition = -k * central_repulsion_coefficient * d0 * (
+            d0 / max(d, d0 / 1000) - 1)
+
+    return linear_force + nonlinear_addition
+
+
+class PlateauConfiguration():
+    """ Class to define alternative compressive force laws, not used by default"""
+    relative_plateau_begin = 0.3
+    relative_plateau_end = 0.8
+    relative_plateau_slope = 0.1
+
+
 class CircleBasicElasticity(CircleMassNeighbors):
     """Basic friction-less sphere with drawing functions.
 
@@ -18,6 +96,10 @@ class CircleBasicElasticity(CircleMassNeighbors):
      dissipation if it comes into contact with another sphere.
     Inherits from `particleShear.PointLeesEdwards`, so will respect Lees-Edwards boundary conditions
     provided `particleShear.PointLeesEdwards.use_lees_edwards` is set to True (default: False)"""
+
+    call_back_elastic_force_law = elastic_force_law
+    """Possibility to pass a callback function to modify the force law"""
+
     def __init__(self, color, x, y, diameter, m=1,theCanvas=False, doDrawing=False,force_register=Force_register(),
                  use_lees_edwards=False):
         """Initialize self
@@ -76,17 +158,13 @@ class CircleBasicElasticity(CircleMassNeighbors):
         for small indentations.\n
         This method is defined in class `particleShear.CircleBasicElasticity`"""
 
+
         d = self.d(theSphere)
         pos = theSphere.coordinates()
         r = pos[2]
-        if d > r + self.r:
-            return 0
+        d0 = r + self.r
 
-        linear_force=-k*(1-self.central_repulsion_coefficient) * (self.r + r - d)
-        nonlinear_addition=-k*self.central_repulsion_coefficient*(self.r + r)*((self.r+r)/max(d,(self.r + r)/1000)-1)
-
-
-        return(linear_force+nonlinear_addition)
+        return CircleBasicElasticity.call_back_elastic_force_law(d,d0,k,self.central_repulsion_coefficient)
 
 
 

@@ -4,8 +4,31 @@ import math
 from particleShearObjects import SphereFrictionLeesEdwards
 from .neighbor_relation_linkable import neighbor_relation_linkable
 from particleShearBase import Force_register
+from particleShearBase import CircleBasicElasticity
+from math import exp
+
+
+def elastic_force_law_tensile(d, d0, k):
+    return -k * (d0 - d)
+
+def elastic_force_law_tensile_exponential(d, d0, k):
+    return k*(1-exp(-(d-d0)/d0/TensileConfiguration.d_exponential))*d0*TensileConfiguration.d_exponential
+
+
+
+
+
+
+class TensileConfiguration():
+    """ Class to define alternative tensile force laws, not used by default"""
+
+    d_exponential=0.2
+
 
 class SphereLinkable(SphereFrictionLeesEdwards):
+    call_back_elastic_force_law_tensile = elastic_force_law_tensile
+
+
     def __init__(self, color, x, y, diameter, m=1,my_index=1, theCanvas=FALSE, doDrawing=FALSE,
                  force_register=Force_register(),size_x=500,size_y=500):
         super(SphereLinkable,self).__init__(color, x, y, diameter, m,my_index, theCanvas, doDrawing,force_register,size_x,size_y)
@@ -270,6 +293,8 @@ class SphereLinkable(SphereFrictionLeesEdwards):
 
     def elastic_force(self, theSphere, k):
 
+
+
         foundNeighborIndex = self.findNeighborIndex(theSphere)
 
         if(foundNeighborIndex>=0):
@@ -311,15 +336,18 @@ class SphereLinkable(SphereFrictionLeesEdwards):
         equilibrium_distance = self.neighbors[foundNeighborIndex].equilibrium_distance
 
         if d>=equilibrium_distance:
-            return -k * (equilibrium_distance - d)
 
-        linear_force = -k * (1 - self.central_repulsion_coefficient) * (equilibrium_distance - d)
-        nonlinear_addition = -k * self.central_repulsion_coefficient * equilibrium_distance*(equilibrium_distance\
-                             /max(d, equilibrium_distance / 1000) - 1)
+            return SphereLinkable.call_back_elastic_force_law_tensile(d, equilibrium_distance, k)
 
 
 
-        return linear_force+nonlinear_addition
+
+        return CircleBasicElasticity.call_back_elastic_force_law(d, equilibrium_distance, k, self.central_repulsion_coefficient)
+
+
+
+
+
 
 
 

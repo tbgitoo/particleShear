@@ -12,7 +12,8 @@ __all__ = ["Force_register","StressTensorEvaluation","Graphical_output_configura
            "Circle","CircleBasicElasticity",
            "CircleFrictionElasticity","CircleMass","CircleMassNeighbors",
            "CanvasPoints","CanvasPointsBasicElasticity","CanvasPointsBasicElasticityLeesEdwards",
-           "CanvasPointsFrictionElasticityLeesEdwards","CanvasPointsMass","CanvasPointsShear","CanvasPointsNeighbors"]
+           "CanvasPointsFrictionElasticityLeesEdwards","CanvasPointsMass","CanvasPointsShear","CanvasPointsNeighbors",
+           "elastic_force_law_plateau","elastic_force_law","PlateauConfiguration","distance_transform_plateau"]
 
 
 
@@ -44,6 +45,12 @@ from .CanvasPointsMass import CanvasPointsMass
 from .CanvasPointsNeighbors import CanvasPointsNeighbors
 from .CanvasPointsShear import CanvasPointsShear
 
+# Callback functions
+
+from .CircleBasicElasticity import elastic_force_law
+from .CircleBasicElasticity import elastic_force_law_plateau
+from .CircleBasicElasticity import PlateauConfiguration
+from .CircleBasicElasticity import distance_transform_plateau
 
 
 
