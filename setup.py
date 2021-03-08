@@ -1,11 +1,16 @@
 from setuptools import setup
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(name='particleShear',
       version='1.0',
       description='Simulation of frictional and possibly crosslinked particles in shear',
       url='https://github.com/tbgitoo/particleShear',
       author='Thomas Braschler',
-      author_email='thomas.braschler@gmail.com',
+      author_email='thomas.braschler@unige.ch',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       license='MIT',
       packages=['particleShear','particleShearBase','particleShearObjects',
                 'particleShearLinkableObjects',
