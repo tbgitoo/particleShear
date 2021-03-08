@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(name='particleShear',
-      version='1.0',
+      version='1.0.1',
       description='Simulation of frictional and possibly crosslinked particles in shear',
       url='https://github.com/tbgitoo/particleShear',
       author='Thomas Braschler',
@@ -29,5 +29,5 @@ setup(name='particleShear',
           "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
           "Operating System :: OS Independent",
       ],
-    python_requires='>=3.7'
+    python_requires='>=3.5'
       )
