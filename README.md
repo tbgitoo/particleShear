@@ -5,6 +5,12 @@ This package provides a discrete particle simulation kit for having multiple sph
 
 Acknowledgement: Thanks from the author (Thomas Braschler) go to Fabien Bonini and Joé Brefie-Guth for package testing, and to Daniel Lyobenov for initial help with simulation setup.
 
+To install this library in Python, use
+
+pip3 install particleShear
+
+Python version 3.5 or higher is required.
+
 
 The most recent release of this Python module is archived at Zenodo:
 <a href="https://doi.org/10.5281/zenodo.4589212"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4589212.svg" alt="DOI"></a>
